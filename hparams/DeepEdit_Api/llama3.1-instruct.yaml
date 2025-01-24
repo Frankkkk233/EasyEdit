@@ -1,0 +1,12 @@
+alg_name: DeepEdit-Api
+model_name: /data2/zhonghaitian/Models/Meta-Llama-3.1-8B-Instruct/
+api_key: "your-api-key"
+results_dir: ./results
+use_customized: True
+loc_whole: True
+device: 5
+prompts_dir: ./data/prompts
+contriver_dir: ./model/contriever-msmarco
+tokenizer_dir: ./model/contriever-msmarco
+# For Chinese users to set proxy, if you can connect to openai directly, delete the following line...
+proxy: "http://127.0.0.1:7890"
