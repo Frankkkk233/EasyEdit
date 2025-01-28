@@ -24,4 +24,4 @@ lm_head_module: "lm_head"
 mom2_dataset: "wikitext"
 mom2_n_samples: 29567
 mom2_dtype: "float32"
-model_parallel: false
+model_parallel: true
