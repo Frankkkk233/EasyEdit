@@ -1,1 +1,1 @@
-CUDA_VISIBLE_DEVICES=1 python model_edit.py --ds mq
+CUDA_VISIBLE_DEVICES=2,3 python model_edit.py --ds mq
