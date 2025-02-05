@@ -206,10 +206,10 @@ def execute_ft(
                 elif hparams.objective_optimization == 'target_new':
                     logits = model(**inputs_targets).logits
                     shift_logits = logits[..., :-1, :].contiguous()   #预测的最后一个词来自于[question,answer]的最后一个token，没用
-                    shift_labels = inputs_targets['input_ids'][..., 1:].contiguous()
+                    shift_labels = inputs_targets['input_ids'][..., 1:].contiguous()   #让logits和labels个数一致，不是去bos
                     loss_fct = CrossEntropyLoss(reduction='none')
                     loss = loss_fct(shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1))  
-                    loss = loss.view(bs, -1)
+                    loss = loss.view(bs, -1)   #loss是每个位置的误差，而不是标量
                     loss = (loss * label_mask[:,1:]).sum(1) / label_mask[:,1:].sum(1)   #只记录answer位置的loss
                     loss = loss.mean()
                 else:

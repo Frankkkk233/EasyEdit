@@ -14,6 +14,8 @@ class FTHyperParams(HyperParams):
     weight_decay: float
     kl_factor: float
     norm_constraint: float
+    use_customized: bool
+    loc_whole: bool
 
     # Module templates
     rewrite_module_tmp: str
