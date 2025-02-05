@@ -31,7 +31,8 @@ class BaseTrainer:
         LOG.info(f'Config: {config}')
         model_ = get_model(config)
         if 'qwen2' in config.model_name.lower():
-            model_.bfloat16()
+            pass
+            # model_.bfloat16()
         self.alg_module = ALG_TRAIN_DICT[config.alg.upper()]
         LOG.info(f"Loading class {config.alg.upper()} from module {self.alg_module}")
         self.model = self.alg_module(model_, config, lambda: copy.deepcopy(model_))
@@ -64,9 +65,13 @@ class BaseTrainer:
             if self.config.use_customized:
                 collate_fn=train_set.collate_customized
         elif 'automodel' in self.config.model_class.lower():
-            collate_fn = train_set.collate_gpt_fn
+            collate_fn = train_set.collate_gpt_fn            
+            if self.config.use_customized:
+                collate_fn=train_set.collate_customized
         elif 'qwen' in self.config.model_name.lower():
             collate_fn = train_set.collate_gpt_fn
+            if self.config.use_customized:
+                collate_fn=train_set.collate_customized
         elif 'mistral' in self.config.model_name.lower():
             collate_fn = train_set.collate_gpt_fn
         else:
