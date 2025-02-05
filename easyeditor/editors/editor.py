@@ -18,7 +18,7 @@ from ..util import nethook
 from ..util.hparams import HyperParams
 from ..util.alg_dict import *
 from ..evaluate.evaluate_utils import test_generation_quality
-
+from accelerate import dispatch_model
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
                     level = logging.INFO)
@@ -138,7 +138,7 @@ class BaseEditor:
             self.model, self.tok = self.model_name
 
         if hparams.model_parallel: 
-            hparams.device = str(self.model.device).split(":")[1]
+            hparams.device = str(self.model.device).split(":")[1]  #获取冒号后面的东西
         if not hparams.model_parallel and hasattr(hparams, 'device') and hparams.alg_name != 'QLoRA':
             self.model.to(f'cuda:{hparams.device}')
 
