@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 python model_edit.py --ds mq --alg FT --model qwen2.5-instruct

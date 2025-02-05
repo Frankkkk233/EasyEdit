@@ -23,7 +23,7 @@ from easyeditor.dataset.counterfact import adjust_cf
 from easyeditor.dataset.MQuAKE import adjust_mq
 import os           
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "6"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 # def multi_model_edit(hparams,train_ds,val_ds):
 
@@ -81,7 +81,7 @@ def edit_test(model:str=None,layer:str=None,edit_ds:str=None,val_ds:str=None,alg
     if edit_ds=='mq':
         #just for debug
         # ds = MQuAKEDataset('./data/mquake/MQuAKE-CF-testing.json')
-        #edit
+        # edit
         ds = MQuAKEDataset('./data/mquake/MQuAKE-CF-3k-v2.json')
         ds=adjust_mq(ds)
 
@@ -101,12 +101,13 @@ def edit_test(model:str=None,layer:str=None,edit_ds:str=None,val_ds:str=None,alg
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ds",default='mq',type=str,help="test_data")
-    parser.add_argument("--alg",default='MEMIT',type=str,help="algorithm")
+    parser.add_argument("--ds",default='cf',type=str,help="test_data")
+    parser.add_argument("--alg",default='FT',type=str,help="algorithm")
+    parser.add_argument("--model",default='qwen2.5-instruct',type=str)
     
     # 解析命令行参数
     args = parser.parse_args()
-    edit_test(model='llama3.1-instruct',layer='none',edit_ds=args.ds,alg=args.alg,suffix='')
+    edit_test(model=args.model,layer='none',edit_ds=args.ds,alg=args.alg,suffix='')
 
 if __name__ == '__main__':
     main()

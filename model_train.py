@@ -15,6 +15,8 @@ from easyeditor import ZsreDataset,CounterFactDataset,MQuAKEDataset
 from easyeditor.dataset.counterfact import adjust_cf
 from easyeditor.dataset.MQuAKE import adjust_mq
 # def multi_model_edit(hparams,train_ds,val_ds):
+import os     
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 
@@ -91,11 +93,13 @@ def edit_train(model:str=None,layer:str=None,train_ds:str=None,val_ds:str=None,a
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ds",default='cf',type=str,help="train_data")
+    parser.add_argument("--ds",default='cf',type=str,help="test_data")
+    parser.add_argument("--alg",default='MEND',type=str,help="algorithm")
+    parser.add_argument("--model",default='qwen2.5-instruct',type=str)
     
     # 解析命令行参数
     args = parser.parse_args()
-    edit_train(model='llama3.1-instruct',layer='none',train_ds=args.ds,alg='MEND')
+    edit_train(model=args.model,layer='none',train_ds=args.ds,alg=args.alg)
 
 if __name__ == '__main__':
     main()
