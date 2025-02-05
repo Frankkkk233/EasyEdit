@@ -366,7 +366,7 @@ class MQuAKEDataset(Dataset):
         edit_inner["input_ids"] = batches["src_input_ids"]
         edit_inner["attention_mask"] = batches["src_attention_mask"]
         edit_labels = self.get_edit_labels(batches["trg_input_ids"])
-        edit_labels = edit_labels[:,1:]   #去掉bos
+        edit_labels = edit_labels[:,1:]  if 'llama' in self.config.model_class.lower() else edit_labels  #去掉bos
 
         edit_inner["labels"] = edit_labels
 
@@ -427,8 +427,8 @@ class MQuAKEDataset(Dataset):
 
         port["decoder_attention_mask"] = port_ans["attention_mask"]
         port["labels"] = self.get_edit_labels(port_ans["input_ids"])
-        port['labels'] = port['labels'][:,1:]  #去掉bos
-        port["decoder_attention_mask"]=port["decoder_attention_mask"][:,1:]
+        port['labels'] = port['labels'][:,1:] if 'llama' in self.config.model_class.lower() else port['labels'] #去掉bos
+        port["decoder_attention_mask"]=port["decoder_attention_mask"][:,1:] if 'llama' in self.config.model_class.lower() else port['decoder_attention_mask']
 
 
 

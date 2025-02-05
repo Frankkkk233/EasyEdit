@@ -311,7 +311,7 @@ class CounterFactDataset(Dataset):
         edit_inner["input_ids"] = batches["src_input_ids"]      #[question,ans]的inputids
         edit_inner["attention_mask"] = batches["src_attention_mask"]
         edit_labels = self.get_edit_labels(batches["trg_input_ids"])
-        edit_labels = edit_labels[:,1:]   #去掉bos
+        edit_labels = edit_labels[:,1:]  if not 'qwen' in self.config.model_name.lower() else edit_labels #去掉bos
         edit_inner["labels"] = edit_labels
         
 
@@ -343,8 +343,8 @@ class CounterFactDataset(Dataset):
         )
         loc["decoder_attention_mask"] = loc_ans["attention_mask"]
         loc_labels = self.get_edit_labels(loc_ans["input_ids"])
-        loc_labels = loc_labels[:,1:]  #去掉bos
-        loc["decoder_attention_mask"]=loc["decoder_attention_mask"][:,1:]
+        loc_labels = loc_labels[:,1:]  if not 'qwen' in self.config.model_name.lower() else loc_labels #去掉bos
+        loc["decoder_attention_mask"]=loc["decoder_attention_mask"][:,1:] if not 'qwen' in self.config.model_name.lower() else loc["decoder_attention_mask"]
         loc["labels"] = loc_labels
 
         # portability TODO
