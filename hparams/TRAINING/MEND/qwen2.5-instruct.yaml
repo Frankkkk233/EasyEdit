@@ -1,14 +1,8 @@
 # Model
-
-archive: ./results/models/MEND/Qwen2.5-7B
-alg_name: "MEND"
-device: 0
-model_name: "/disk1/xuhaoming/Models/Qwen2.5-7B"
-
-model_class: AutoModelForCausalLM
-tokenizer_class: AutoTokenizer
-tokenizer_name: "/disk1/xuhaoming/Models/Qwen2.5-7B"
-model_parallel: true
+model_name: "/data0/liuyuhuan/liuyuhuan/repo/EasyEdit/model/Qwen2.5-7B-Instruct"
+model_class: Qwen2ForCausalLM
+tokenizer_class: Qwen2TokenizerFast
+tokenizer_name: "/data0/liuyuhuan/liuyuhuan/repo/EasyEdit/model/Qwen2.5-7B-Instruct"
 inner_params:
 - model.layers.25.mlp.gate_proj.weight
 - model.layers.25.mlp.up_proj.weight
@@ -20,12 +14,13 @@ inner_params:
 - model.layers.27.mlp.up_proj.weight
 - model.layers.27.mlp.down_proj.weight
 
+archive: null
+
 # Method
 alg: MEND
 lr: 1e-6
 edit_lr: 1e-4
 lr_lr: 1e-4
-lr_scale: 1.0
 seed: 42
 cedit: 0.1
 cloc: 1.0
@@ -47,29 +42,31 @@ mlp_class: IDMLP
 shared: True
 
 # Train
+device: cuda:0
 batch_size: 1
 model_save_pt: 5000
 silent: False
 #max_epochs: 1
-max_iters: 100000
-log_interval: 1000
+# max_iters: 100000
+max_iters: 1000
+log_interval: 60
 eval_log_interval: 1000
 final_eval: True
 val_interval: 1000
-early_stop_patience: 20000
+early_stop_patience: 10000
 early_stop_key: "loss/total_edit_val"
-eval_only: True
+eval_only: False
 half: False
 debug: False
 save: False
 verbose: True
-
-val_batch_size: 5
-accumulate_bs: 10
-val_steps: 500 # only for debug
+use_customized: true
+val_batch_size: 1
+accumulate_bs: 2
+val_steps: 2500 # only for debug
 opt: Adam
 grad_clip: 100.
 
 # Output
 
-results_dir: ./results
+results_dir: ./results/InstructEdit/cf   #!!!change depend on data 

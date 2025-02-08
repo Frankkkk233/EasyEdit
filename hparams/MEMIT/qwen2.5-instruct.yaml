@@ -1,7 +1,7 @@
 alg_name: "MEMIT"
-model_name: "/disk1/xuhaoming/Models/Qwen2.5-7B"
+model_name: "/data0/liuyuhuan/liuyuhuan/repo/EasyEdit/model/Qwen2.5-7B-Instruct"
 stats_dir: "./data/stats"
-device: 5
+device: 0
 layers: [4, 5, 6, 7, 8]
 clamp_norm_factor: 4
 layer_selection: "all"
@@ -19,9 +19,9 @@ mlp_module_tmp: "model.layers.{}.mlp"
 attn_module_tmp: "model.layers.{}.self_attn"
 ln_f_module: "model.norm"
 lm_head_module: "lm_head"
-mom2_dataset: "wikipedia"
-mom2_n_samples: 100000
+mom2_dataset: "wikitext"
+mom2_n_samples: 29567
 mom2_dtype: "float32"
-model_parallel: True
-use_customized: true
+model_parallel: false
+use_customized: True
 loc_whole: False
