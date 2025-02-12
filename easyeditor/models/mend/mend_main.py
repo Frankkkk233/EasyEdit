@@ -101,7 +101,7 @@ class MendRewriteExecutor:
         target_tok = self.tokenizer(targets, padding=True, return_tensors="pt").to(
             f"cuda:{hparams.device}"
         )
-        if hparams.use_customized:
+        if hparams.use_customized and 'llama' in hparams.tokenizer_class.lower():
             target_tok['input_ids']=target_tok['input_ids'][:,1:]  #remove bos
             target_tok['attention_mask']=target_tok['attention_mask'][:,1:]  #remove bos
 
