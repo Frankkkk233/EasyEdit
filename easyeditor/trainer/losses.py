@@ -27,7 +27,6 @@ def kl_loc_loss(pre, post, mask=None):
 
     raise NotImplementedError
 
-
 def binary_log_probs(pred, targ):
     neg_mask = torch.ones_like(pred)
     neg_mask[targ == 0] *= -1
