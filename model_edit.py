@@ -18,7 +18,7 @@ from easyeditor import (
 from easyeditor import BaseEditor
 from easyeditor.models.ike import encode_ike_facts
 from sentence_transformers import SentenceTransformer
-from easyeditor import ZsreDataset,CounterFactDataset,MQuAKEDataset
+from easyeditor import ZsreDataset,CounterFactDataset,MQuAKEDataset,EvokeDataset,Evoke_subj_specDataset
 from easyeditor.dataset.counterfact import adjust_cf
 from easyeditor.dataset.MQuAKE import adjust_mq
 import os           
@@ -31,10 +31,14 @@ import os
 
 
 
-def edit(editor,data_dict):
-    
-
-    metrics, edited_model, _ = editor.edit(**data_dict,
+def edit(editor,data_dict,edit_ds):
+    if 'evoke' in edit_ds.lower():
+        metrics, edited_model, _ = editor.edit_dataset(data_dict,
+        train_ds=None,
+        keep_original_weight=True
+        )
+    else:
+        metrics, edited_model, _ = editor.edit(**data_dict,
         train_ds=None,
         keep_original_weight=True
     )
@@ -76,7 +80,7 @@ def edit_test(model:str=None,layer:str=None,edit_ds:str=None,val_ds:str=None,alg
         #just for debug
         # ds = CounterFactDataset('./data/counterfact/counterfact-testing.json')
         #edit
-        ds = CounterFactDataset('./data/counterfact/counterfact-edit.json')
+        ds = CounterFactDataset('./data/counterfact/counterfact-edit.json',size=1000)
         ds=adjust_cf(ds)
     if edit_ds=='mq':
         #just for debug
@@ -84,6 +88,17 @@ def edit_test(model:str=None,layer:str=None,edit_ds:str=None,val_ds:str=None,alg
         # edit
         ds = MQuAKEDataset('./data/mquake/MQuAKE-CF-3k-v2.json')
         ds=adjust_mq(ds)
+    if edit_ds=='evoke':
+        #just for debug
+        ds = EvokeDataset('./data/evoke/evoke_main.json')
+        # edit
+        # ds = EvokeDataset('./data/evoke/evoke_main.json')
+    if edit_ds=='evoke_subj_spec':
+        #just for debug
+        ds = Evoke_subj_specDataset('./data/evoke/evoke_subj_spec.json')
+        # edit
+        # ds = EvokeDataset('./data/evoke/evoke_subj_spec.json')
+
 
 
     hparams=editing_hparams.from_hparams(config_path)
@@ -93,7 +108,7 @@ def edit_test(model:str=None,layer:str=None,edit_ds:str=None,val_ds:str=None,alg
     print(f'---------------use cuda:{hparams.device}-----------------------')
 
 
-    metrics=edit(editor,ds)
+    metrics=edit(editor,ds,edit_ds)
     json.dump(metrics, open('./logs/'+model+'_'+alg+'_'+edit_ds+suffix+'.json', 'w+'), indent=4)
     
     # train(hparams,train_ds,val_ds)
@@ -102,7 +117,7 @@ def edit_test(model:str=None,layer:str=None,edit_ds:str=None,val_ds:str=None,alg
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--ds",default='cf',type=str,help="test_data")
-    parser.add_argument("--alg",default='FT',type=str,help="algorithm")
+    parser.add_argument("--alg",default='MEMIT',type=str,help="algorithm")
     parser.add_argument("--model",default='qwen2.5-instruct',type=str)
     
     # 解析命令行参数

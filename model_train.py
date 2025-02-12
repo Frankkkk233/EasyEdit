@@ -11,12 +11,12 @@ from easyeditor import KNHyperParams, FTHyperParams, KETrainingHparams,\
 from easyeditor import BaseEditor,EditTrainer
 from easyeditor.models.ike import encode_ike_facts
 from sentence_transformers import SentenceTransformer
-from easyeditor import ZsreDataset,CounterFactDataset,MQuAKEDataset
+from easyeditor import ZsreDataset,CounterFactDataset,MQuAKEDataset,EvokeDataset
 from easyeditor.dataset.counterfact import adjust_cf
 from easyeditor.dataset.MQuAKE import adjust_mq
 # def multi_model_edit(hparams,train_ds,val_ds):
 import os     
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "5"
 
 
 
@@ -62,8 +62,8 @@ def edit_train(model:str=None,layer:str=None,train_ds:str=None,val_ds:str=None,a
         # train_ds = CounterFactDataset('./data/counterfact/counterfact-testing.json',config=training_hparams)
         # val_ds = CounterFactDataset('./data/counterfact/counterfact-testing.json',config=training_hparams)
         #train
-        train_ds = CounterFactDataset('./data/counterfact/counterfact-train.json',config=training_hparams)
-        val_ds = CounterFactDataset('./data/counterfact/counterfact-val.json',config=training_hparams)
+        train_ds = CounterFactDataset('./data/counterfact/counterfact-train.json',size=1000,config=training_hparams)
+        val_ds = CounterFactDataset('./data/counterfact/counterfact-val.json',size=1000,config=training_hparams)
     if train_ds=='mq':
         #just for debug
         # train_ds = MQuAKEDataset('./data/mquake/MQuAKE-CF-testing.json',config=training_hparams)
@@ -71,6 +71,13 @@ def edit_train(model:str=None,layer:str=None,train_ds:str=None,val_ds:str=None,a
         #train
         train_ds = MQuAKEDataset('./data/mquake/MQuAKE-CF-3k-v2_train.json',config=training_hparams)
         val_ds = MQuAKEDataset('./data/mquake/MQuAKE-CF-3k-v2_test.json',config=training_hparams)
+    if train_ds=='evoke':     
+        #just for debug
+        train_ds = EvokeDataset('./data/evoke/evoke_main.json',config=training_hparams)
+        val_ds = EvokeDataset('./data/evoke/evoke_main.json',config=training_hparams)
+        #train
+        # train_ds = EvokeDataset('./data/evoke/evoke_main.json',config=training_hparams)
+        # val_ds = EvokeDataset('./data/evoke/evoke_main.json',config=training_hparams)
 
 
 
@@ -93,7 +100,7 @@ def edit_train(model:str=None,layer:str=None,train_ds:str=None,val_ds:str=None,a
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ds",default='cf',type=str,help="test_data")
+    parser.add_argument("--ds",default='evoke',type=str,help="test_data")
     parser.add_argument("--alg",default='MEND',type=str,help="algorithm")
     parser.add_argument("--model",default='qwen2.5-instruct',type=str)
     
