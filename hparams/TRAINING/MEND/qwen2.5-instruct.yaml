@@ -3,6 +3,7 @@ model_name: "/data0/liuyuhuan/liuyuhuan/repo/EasyEdit/model/Qwen2.5-7B-Instruct"
 model_class: Qwen2ForCausalLM
 tokenizer_class: Qwen2TokenizerFast
 tokenizer_name: "/data0/liuyuhuan/liuyuhuan/repo/EasyEdit/model/Qwen2.5-7B-Instruct"
+model_parallel: false
 inner_params:
 - model.layers.25.mlp.gate_proj.weight
 - model.layers.25.mlp.up_proj.weight
@@ -48,12 +49,12 @@ model_save_pt: 5000
 silent: False
 #max_epochs: 1
 # max_iters: 100000
-max_iters: 1000
-log_interval: 60
+max_iters: 10000
+log_interval: 100
 eval_log_interval: 1000
 final_eval: True
-val_interval: 1000
-early_stop_patience: 10000
+val_interval: 500
+early_stop_patience: 1000
 early_stop_key: "loss/total_edit_val"
 eval_only: False
 half: False
@@ -69,4 +70,4 @@ grad_clip: 100.
 
 # Output
 
-results_dir: ./results/InstructEdit/cf   #!!!change depend on data 
+results_dir: ./results/InstructEdit/mq   #!!!change depend on data 

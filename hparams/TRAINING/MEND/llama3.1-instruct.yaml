@@ -4,6 +4,7 @@ model_class: LlamaForCausalLM
 tokenizer_class: LlamaTokenizer
 tokenizer_name: /data2/zhonghaitian/Models/Meta-Llama-3.1-8B-Instruct
 use_customized: True
+model_parallel: false
 inner_params:
 - model.layers.29.mlp.up_proj.weight
 - model.layers.29.mlp.down_proj.weight
@@ -49,7 +50,7 @@ max_iters: 10000
 log_interval: 100
 eval_log_interval: 100
 final_eval: True
-val_interval: 250
+val_interval: 500
 early_stop_patience: 1000
 early_stop_key: "edit/acc_val"
 eval_only: False
@@ -66,4 +67,4 @@ grad_clip: 100.
 
 # Output
 
-results_dir: ./results/InstructEdit/     #!!!change depend on data 
+results_dir: ./results/InstructEdit/cf     #!!!change depend on data 
