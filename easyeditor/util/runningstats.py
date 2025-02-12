@@ -96,6 +96,29 @@ def tally(stat, dataset, cache=None, quiet=False, **kwargs):
         random_sample=S is specified, the pseudorandom seed S will be
         used to select a fixed psedorandom sample of size N to sample.
     """
+    # assert isinstance(stat, Stat)
+    # args = {}
+    # for k in ["sample_size"]:
+    #     if k in kwargs:
+    #         args[k] = kwargs[k]
+    # cached_state = load_cached_state(cache, args, quiet=quiet)
+    # if cached_state is not None:
+    #     stat.load_state_dict(cached_state)
+
+    #     def empty_loader():
+    #         return
+    #         yield
+
+    #     return empty_loader()
+    # loader = make_loader(dataset, **kwargs)
+
+    # def wrapped_loader():
+    #     yield from loader
+    #     stat.to_(device="cpu")
+    #     if cache is not None:
+    #         pass
+    #         # save_cached_state(cache, stat, args)
+            
     assert isinstance(stat, Stat)
     args = {}
     for k in ["sample_size"]:
@@ -116,8 +139,9 @@ def tally(stat, dataset, cache=None, quiet=False, **kwargs):
         yield from loader
         stat.to_(device="cpu")
         if cache is not None:
-            pass
-            # save_cached_state(cache, stat, args)
+            save_cached_state(cache, stat, args)
+
+
 
     return wrapped_loader()
 
